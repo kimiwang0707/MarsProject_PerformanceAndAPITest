@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "31d14426-e63b-4c67-9a35-dc5dfa0a09f4",
+		"name": "ReqRes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"pageNum\", data.pageNumber);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Test First Name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data[0].first_name).to.eql(\"Michael\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Test Page Number\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var pageNums = pm.environment.get(\"pageNum\");\r",
+							"    pm.expect(jsonData.page).to.eql(pageNums);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users?page={{pageNum}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{pageNum}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"createUserName\", data.NewUserName);\r",
+							"pm.environment.set(\"createUserJob\", data.NewUserJob);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Create User Name Check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var NewUserName = pm.environment.get(\"createUserName\");\r",
+							"    pm.expect(jsonData.name).to.eql(NewUserName);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Create User Job Check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var NewUserJob = pm.environment.get(\"createUserJob\");\r",
+							"    pm.expect(jsonData.job).to.eql(NewUserJob);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{createUserName}}\",\r\n    \"job\": \"{{createUserJob}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"UpdatedName\", data.UpdatedName);\r",
+							"pm.environment.set(\"UpdatedJob\", data.UpdatedJob);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Updated Name Check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var updatedName = pm.environment.get(\"UpdatedName\");\r",
+							"    pm.expect(jsonData.name).to.eql(updatedName);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Updated Job Check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var updatedJob = pm.environment.get(\"UpdatedJob\");\r",
+							"    pm.expect(jsonData.job).to.eql(updatedJob);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{UpdatedName}}\",\r\n    \"job\": \"{{UpdatedJob}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
